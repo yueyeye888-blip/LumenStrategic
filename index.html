@@ -195,7 +195,7 @@
             <div class="section-subtitle" style="margin-bottom: 20px;"><span data-i18n="cnt-sub"></span></div><p style="text-align:center; max-width:800px; margin:0 auto; color:#94a3b8; font-size:16px; margin-bottom: 40px; line-height:1.6;" data-i18n="cnt-desc"></p>
             
             <div class="form-container">
-                <form class="contact-form" id="contact-form" onsubmit="event.preventDefault(); alert('Application submitted successfully!');">
+                <form class="contact-form" id="contact-form" onsubmit="handleFormSubmit(event)">
                     
                     <div class="form-row">
                         <div class="form-group">
@@ -281,5 +281,48 @@
     <!-- App Scripts -->
     <script src="js/main.js?v=28"></script>
     <script src="js/i18n.js"></script>
+
+    <script>
+        // 当你买好服务器后，请将这里的地址替换为你服务器的真实 IP 或者域名
+        // 例如： "http://123.45.67.89:5000/api/submit"
+        window.BACKEND_API_URL = "http://127.0.0.1:5000/api/submit";
+
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            const form = event.target;
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+            
+            // 获取下拉框的文本（而不是数字）
+            const typeSelect = form.querySelector('[name="investor_type"]');
+            const interestSelect = form.querySelector('[name="interest"]');
+            if (typeSelect.selectedIndex > 0) data.investor_type = typeSelect.options[typeSelect.selectedIndex].text;
+            if (interestSelect.selectedIndex > 0) data.interest = interestSelect.options[interestSelect.selectedIndex].text;
+
+            const btn = form.querySelector('button[type="submit"]');
+            const originalText = btn.innerText;
+            btn.innerText = "Submitting...";
+            btn.disabled = true;
+
+            fetch(window.BACKEND_API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+            .then(res => res.json())
+            .then(resData => {
+                alert(currentLang === 'zh' ? "合作申请提交成功！我们会尽快联系您。" : "Application submitted successfully!");
+                form.reset();
+            })
+            .catch(err => {
+                console.error(err);
+                alert(currentLang === 'zh' ? "提交失败，请检查网络或稍后重试。" : "Submission failed, please try again later.");
+            })
+            .finally(() => {
+                btn.innerText = originalText;
+                btn.disabled = false;
+            });
+        }
+    </script>
 </body>
 </html>
