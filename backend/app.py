@@ -97,9 +97,7 @@ LOGIN_TEMPLATE = """
                     安全登录
                 </button>
             </form>
-            <div class="mt-5 text-center">
-                <a href="/register" class="text-sm text-yellow-600 hover:text-yellow-500 font-medium transition-colors">没有账号？注册新管理员 &rarr;</a>
-            </div>
+            
         </div>
         <div class="bg-gray-50 px-6 py-4 border-t border-gray-100 text-center">
             <p class="text-xs text-gray-500">此系统限制授权访问。未经许可，请勿尝试登录。</p>
@@ -117,82 +115,81 @@ REGISTER_TEMPLATE = """
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lumen Strategic - 注册管理员</title>
+    <title>Lumen Strategic - 添加管理员</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <style>
-        body {
-            background-image: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
-        }
-    </style>
 </head>
-<body class="min-h-screen flex items-center justify-center p-4">
-    <div class="max-w-md w-full bg-white rounded-2xl shadow-xl overflow-hidden">
-        <div class="bg-gray-900 px-6 py-8 text-center relative">
-            <a href="/login" class="absolute left-6 top-8 text-gray-400 hover:text-white transition-colors">
-                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                </svg>
-            </a>
-            <h2 class="text-2xl font-bold text-yellow-500 tracking-widest uppercase mb-2">添加管理员</h2>
-            <p class="text-gray-400 text-sm">注册新的后台访问权限</p>
-        </div>
-        <div class="p-8">
-            {% if error %}
-            <div class="bg-red-50 border-l-4 border-red-500 p-4 mb-6">
+<body class="bg-gray-100 text-gray-800 font-sans antialiased min-h-screen flex flex-col">
+    <!-- Navbar -->
+    <nav class="bg-gray-900 shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
                 <div class="flex items-center">
-                    <div class="ml-3">
-                        <p class="text-sm text-red-700 font-medium">{{ error }}</p>
+                    <div class="flex-shrink-0 flex items-center text-yellow-500 font-bold text-xl tracking-widest uppercase">
+                        LUMEN STRATEGIC
                     </div>
                 </div>
-            </div>
-            {% endif %}
-            {% if success %}
-            <div class="bg-green-50 border-l-4 border-green-500 p-4 mb-6">
                 <div class="flex items-center">
-                    <div class="ml-3">
-                        <p class="text-sm text-green-700 font-medium">{{ success }}</p>
-                    </div>
+                    <a href="/admin" class="text-sm font-medium text-gray-300 hover:text-white transition-colors mr-4">返回数据中心</a>
+                    <a href="/logout" class="text-sm font-medium text-gray-400 hover:text-white transition-colors bg-gray-800 hover:bg-gray-700 px-3 py-1.5 rounded">退出登录</a>
                 </div>
             </div>
-            {% endif %}
-            
-            <form method="POST" action="/register" class="space-y-5">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">新管理员账号</label>
-                    <input type="text" name="username" required class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-colors bg-gray-50 focus:bg-white text-gray-900" placeholder="设置账号名称">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">设置密码</label>
-                    <input type="password" name="password" required class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-colors bg-gray-50 focus:bg-white text-gray-900" placeholder="设置登录密码">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">系统邀请码</label>
-                    <input type="password" name="invite_code" required class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-colors bg-gray-50 focus:bg-white text-gray-900" placeholder="请输入邀请码以验证身份">
-                    <p class="text-xs text-gray-500 mt-1">需输入系统分配的内部邀请码方可注册。</p>
-                </div>
-                <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-gray-900 bg-yellow-400 hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 transition-all font-bold mt-6">
-                    注册并生成授权
-                </button>
-            </form>
         </div>
-    </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow w-full max-w-xl mx-auto px-4 py-12">
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+            <div class="p-6 border-b border-gray-100 bg-gray-50">
+                <h2 class="text-xl font-bold text-gray-900">分配管理员权限</h2>
+                <p class="text-sm text-gray-500 mt-1">创建的新账号将同样拥有查看所有客户提交数据的权限</p>
+            </div>
+            <div class="p-6">
+                {% if error %}
+                <div class="bg-red-50 border-l-4 border-red-500 p-4 mb-6">
+                    <p class="text-sm text-red-700 font-medium">{{ error }}</p>
+                </div>
+                {% endif %}
+                {% if success %}
+                <div class="bg-green-50 border-l-4 border-green-500 p-4 mb-6">
+                    <p class="text-sm text-green-700 font-medium">{{ success }}</p>
+                </div>
+                {% endif %}
+                
+                <form method="POST" action="/register" class="space-y-5">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">新管理员账号名称</label>
+                        <input type="text" name="username" required class="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-colors bg-gray-50 focus:bg-white" placeholder="如: admin_sales">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">设置登录密码</label>
+                        <input type="password" name="password" required class="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-colors bg-gray-50 focus:bg-white" placeholder="密码需妥善保存">
+                    </div>
+                    <div class="pt-4">
+                        <button type="submit" class="w-full flex justify-center py-3 px-4 rounded-lg shadow-sm text-sm font-bold text-gray-900 bg-yellow-400 hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 transition-all">
+                            确认生成账号
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
 </body>
 </html>
 """
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+    # 鉴权机制：只有已经登录的管理员才能进入此页面并添加新管理员
+    if not session.get('logged_in'):
+        return redirect(url_for('login'))
+        
     error = None
     success = None
     if request.method == 'POST':
         username = request.form.get('username')
         password = request.form.get('password')
-        invite_code = request.form.get('invite_code')
         
-        # 保护机制：只有知道邀请码的人才能注册管理员
-        if invite_code != 'lumen2026':
-            error = '邀请码错误，您无权注册管理员账号。'
-        elif not username or not password:
+        if not username or not password:
             error = '账号和密码不能为空。'
         else:
             try:
@@ -201,11 +198,11 @@ def register():
                     c.execute('INSERT INTO admins (username, password) VALUES (?, ?)', 
                               (username, generate_password_hash(password)))
                     conn.commit()
-                success = '注册成功！您现在可以返回登录页面使用新账号登录了。'
+                success = f'账号 【{username}】 创建成功！该系统管理员现在可访问登录页进行后台维护。'
             except sqlite3.IntegrityError:
-                error = '该账号已存在，请换一个用户名。'
+                error = '该账号名称已被占用，请更换其他名称。'
             except Exception as e:
-                error = f'注册失败：{str(e)}'
+                error = f'添加失败：{str(e)}'
                 
     return render_template_string(REGISTER_TEMPLATE, error=error, success=success)
 
