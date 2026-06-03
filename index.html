@@ -285,7 +285,8 @@
     <script>
         // 当你买好服务器后，请将这里的地址替换为你服务器的真实 IP 或者域名
         // 例如： "http://123.45.67.89:5000/api/submit"
-        window.BACKEND_API_URL = "http://103.73.161.155:5000/api/submit";
+        // API Endpoint is now securely relative because frontend and backend will share the same domain (https://lumstrat.com)
+        window.BACKEND_API_URL = "/api/submit";
 
         function handleFormSubmit(event) {
             event.preventDefault();
